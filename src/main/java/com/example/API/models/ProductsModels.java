@@ -20,15 +20,15 @@ public class ProductsModels implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @Min(value = 1, message = "value must be greater than or equal to 1")
+    @Min(value = 1, message = "o valor deve ser maior ou igual a 1")
     private BigDecimal valor_custo;
     private String data_referencia;
-    @Size(min = 5, max = 250, message = "Description must be between 5 and 250")
+    @Size(min = 5, max = 250, message = "A descrição deve ter entre 5 e 250 caracteres")
     private String descricao;
-    @Size(min = 5, max = 10, message = "SKU size must be between 5 and 10")
+    @Size(min = 5, max = 10, message = "O tamanho do SKU deve ter entre 5 e 10 caracteres")
     private String sku;
-    @Min(value = 1, message = "Type must be less than or equal to 5")
-    @Max(value = 5, message = "type must be less than or equal to 5")
+    @Min(value = 1, message = "O tipo deve ser menor ou igual a 5")
+    @Max(value = 5, message = "O tipo deve ser menor ou igual a 5")
     private String tipo_produto;
 
     public UUID getId() {

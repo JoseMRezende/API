@@ -24,28 +24,28 @@ public class ProductsControllers {
     @Autowired
     ProductsRepositories productsRepositories;
 
-    @Operation(summary = "Search existing products in the database", method = "GET")
+    @Operation(summary = "Pesquisar produtos existentes no banco de dados", method = "GET")
     @GetMapping("/products")
     public ResponseEntity<List<ProductsModels>> getProducts() {
         return ResponseEntity.status(HttpStatus.OK).body(productsRepositories.findAll());
     }
 
-    @Operation(summary = "Search existing products in the database by ID", method = "GET")
+    @Operation(summary = "Pesquisar produtos existentes no banco de dados por ID", method = "GET")
     @GetMapping("/products/{id}")
     public ResponseEntity<Object> getProduct(@PathVariable(value = "id") UUID id) {
         Optional<ProductsModels> product1 = productsRepositories.findById(id);
         if (product1.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product does not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto informado não existe");
         }
         return ResponseEntity.status(HttpStatus.OK).body(product1.get());
     }
 
-    @Operation(summary = "Add product to the database", method = "POST")
+    @Operation(summary = "Adicionar produto no banco de dados", method = "POST")
     @PostMapping("/products")
     public ResponseEntity<?> saveProducts(@RequestBody @Valid ProductsDto productsDto) {
         Optional<ProductsModels> existingSku = productsRepositories.findBySku(productsDto.sku());
         if (existingSku.isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("SKU already mentioned in another product");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("SKU já informado em outro produto");
         }
         ProductsModels productsModels = new ProductsModels();
         BeanUtils.copyProperties(productsDto, productsModels);
@@ -54,31 +54,31 @@ public class ProductsControllers {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 
-    @Operation(summary = "Update product to the database", method = "PUT")
+    @Operation(summary = "Atualizar produto no banco de dados", method = "PUT")
     @PutMapping("/products/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable(value = "id") UUID id,
                                                 @RequestBody @Valid ProductsDto productsDto) {
         Optional<ProductsModels> product1 = productsRepositories.findById(id);
         if (product1.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto informado não existe");
         }
         Optional<ProductsModels> existingSku = productsRepositories.findBySku(productsDto.sku());
         if (existingSku.isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("SKU already mentioned in another product");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("SKU já informado em outro produto");
         }
         var productModel = product1.get();
         copyNonNullProperties(productsDto, productModel);
         return ResponseEntity.status(HttpStatus.OK).body(productsRepositories.save(productModel));
     }
 
-    @Operation(summary = "Delete product to the database", method = "DEL")
+    @Operation(summary = "Excluir produto do banco de dados por ID", method = "DEL")
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable(value = "id") UUID id) {
         Optional<ProductsModels> product1 = productsRepositories.findById(id);
         if (product1.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto informado não existe");
         }
         productsRepositories.delete(product1.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Product deleted");
+        return ResponseEntity.status(HttpStatus.OK).body("Produto deletado");
     }
 }
