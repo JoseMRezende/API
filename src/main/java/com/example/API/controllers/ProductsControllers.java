@@ -18,6 +18,7 @@ import java.util.UUID;
 import static com.example.API.service.ProductService.copyNonNullProperties;
 
 @Controller
+@RequestMapping(value = "/products", produces = {"application/json"})
 @Tag(name = "API")
 public class ProductsControllers {
 
