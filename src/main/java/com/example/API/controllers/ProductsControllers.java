@@ -86,4 +86,11 @@ public class ProductsControllers {
         productsRepositories.delete(product1.get());
         return ResponseEntity.status(HttpStatus.OK).body("Produto deletado");
     }
+
+    // Tratamento de erro
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleGenericException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Status: 409 Conflict");
+    }
+
 }
