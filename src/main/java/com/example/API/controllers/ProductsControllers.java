@@ -22,8 +22,12 @@ import static com.example.API.service.ProductService.copyNonNullProperties;
 @Tag(name = "API")
 public class ProductsControllers {
 
+    private final ProductsRepositories productsRepositories;
+
     @Autowired
-    ProductsRepositories productsRepositories;
+    public ProductsControllers(ProductsRepositories productsRepositories) {
+        this.productsRepositories = productsRepositories;
+    }
 
     @Operation(summary = "Pesquisar produtos existentes no banco de dados", method = "GET")
     @GetMapping("/products")
